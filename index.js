@@ -1,12 +1,10 @@
-// TODO: Include packages needed for this application
+// packages and importing generateMarkdown to create readme
 const inquirer = require('inquirer');
 const fs = require('fs');
-const questions = inquirer.prompt;
-// TODO: Create an array of questions for user input
 const generateMarkdown = require('./utils/generateMarkdown.js');
 
-
-inquirer.prompt(
+//command line prompt questions
+const questions = 
     [
     {
         type: "input",
@@ -69,34 +67,29 @@ inquirer.prompt(
         message: "Please enter your email.",
     }
 ]
-)
+
        
 
 
-// TODO: Create a function to write README file
-function writeToFile(fileName, data) {
-    fs.writeFile(fileName, data, err =>{
-        if (err){
-            return console.log(err);
-        }
-        console.log("README.md generated")
-    });
+// writes the readme file
+function runQuery() {
+    return inquirer.prompt(questions)
+    .then((answers) =>{
+        const mark = generateMarkdown(answers)
+        fs.writeFile('README.md', mark, function (err){
+            if (err) {
+                console.log('Could not create README')
+            } else {
+                console.log('Created README')
+            }
+        })
+    })
+    .catch((error) =>{
+        console.log(error)
+    })
 }
    
-// TODO: Create a function to initialize app
-async function init(){
-    try {
-        const answers = await inquirer.prompt;
-        answers.licenseBadge = licenseBadge(answers.license);
-        let readMeData = generateMarkdown;
-        await writeFileAsync("created-README.md", readMeData);
-    } catch (err) {
-        throw err;
-    }
-}
-    
-
-// Function call to initialize app
-init();
+// initializes app
+runQuery()
 
 
